@@ -8,7 +8,9 @@
 
 
 ; AWS Access credentials
-(def cred {:access-key "++++++++YOUR_AWS_S3_ACCESS_KEY++++++", :secret-key "++++++YOUR_AWS_S3_SECRET_KEY+++++"})
+(def cred {
+           :access-key "++++++++YOUR_AWS_S3_ACCESS_KEY++++++", 
+           :secret-key "++++++YOUR_AWS_S3_SECRET_KEY+++++"})
 
 (def BUCKET "Uplode")
 
@@ -16,19 +18,9 @@
 (def MAX_UPLOAD_SIZE 1048576)
 
 
-; file IO
-(defn read-bin-file [file]
-  (clojure.java.io/file file))
-
-(defn write-bin-file [file col]
-  (with-open [out (FileOutputStream. file)]
-    (.write out (byte-array col))))
-
-
 (defn store-file "stores a file on S3" [file-name file]
-  (let [id (uuid)]
     (s3/put-object cred BUCKET file-name file)
-    (s3/update-object-acl cred BUCKET file-name (s3/grant :all-users :read))))
+    (s3/update-object-acl cred BUCKET file-name (s3/grant :all-users :read)))
 
 
 
